@@ -1,0 +1,53 @@
+{
+    "department": "EXTC",
+    "year": "BE",
+    "termTest": "TT1",
+    "subjects": [
+        {
+            "subjectName": "Optical Communication",
+            "topics": [
+                "Unit 1: Optical Fiber Fundamentals - Motivations for light wave communications, General Optical system block diagram, advantages, disadvantages and applications of optical fiber communication, Loss and bandwidth window optical fiber waveguides, Ray theory, Electromagnetic waves, Modes in a planar waveguide, Phase and group velocity, Types and classification of optical fibers",
+                "Unit 2: Transmission Characteristics of Optical Fiber - Attenuation, absorption, linear and nonlinear scattering losses, bending losses, dispersion, Chromatic dispersion, Intermodal dispersion, Over all dispersion in single mode and multimode fibers, dispersion shifted and dispersion flattened fibers, OTDR, Non-linear effects, scattering effects, Kerr effects, soliton",
+                "Unit 3: Optical Sources and Detectors - Working principle and characteristics of sources (LED, LASER), Tunable lasers, Quantum well lasers, Charge capture in Quantum well lasers, Multi Quantum well Laser diodes, Surface Emitting Lasers, Vertical cavity Surface Emitting Lasers, Working principle and characteristics of detectors (PIN, APD), Material requirements for RCEPD, Resonant cavity enhancement (RCE) Photo Detector, receiver structure, bit error rate of optical receivers and receiver performance",
+                "Unit 4: Optical Communication Components - Fiber joints, fiber connectors, splices Couplers, Isolators, multiplexers, filters, fiber gratings, Fabry Perot filters, switches and wavelength converters, Optical amplifiers, basic applications and types(EDFA and SOA)",
+                "Unit 5: Optical Networks and Free Space Optics - Point-to-Point links, system considerations, Link Power budget, Rise time budget, SONET/SDH optical networks, WDM and DWDM optical networks, Introduction to FSO, Applications, Comparison with microwave systems, coherent optical space communication, Drawback and problems of realization, system description and design"
+            ],
+            "referenceBooks": [
+                "Optical Fiber Communications - Gerd Keiser",
+                "Optical Fiber Communications - John M. Senior",
+                "Fiber-Optic Communication Systems - Govind P. Agrawal"
+            ]
+        },
+        {
+            "subjectName": "Wireless Networks",
+            "topics": [
+                "Unit 1: Basics of Wireless Networks - Introduction to Wireless Network, Classifications of wireless networks, Wireless Standards, Spectrum requirement for various wireless systems",
+                "Unit 2: Wireless Personal Area Networks - WPAN: Bluetooth (802.15.1): Radio Specifications, Protocol Stack, Link Types, Security, Topologies, Zigbee (802.15.4): Radio Specifications, Components, Topologies, Protocol Stack, Applications. RFID: Radio Specifications, Architecture & Types, Near Field Communication & UWB (802.15.3.a): Introduction and working",
+                "Unit 3: Wireless Local Area Network and Wireless Metropolitan and Wide Area Networks - Introduction and features of IEEE802.11a, b, i, g and n Equipment, Topologies, Technologies, Applications, IEEE802.11 WLAN Joining an existing Basic Service Set, Security and Power Management, Radio Link and Coverage Planning for IEEE 802.11 WLAN, Case Study: Campus Wi-Fi installation",
+                "Unit 4: Wireless Sensor Network - Background of sensor network technology, sensor network architectural elements, historical survey of sensor networks, Technologies for wireless sensor network, sensor node technology, hardware and software, sensor taxonomy, operating environment, wireless network trends, transmission technology",
+                "Unit 5: Applications of Wireless Sensor Network - Applications of wireless sensor network, range of applications, examples of category 1 and 2, Case Study: Any one application of sensor network, Wireless Body Area Network: Properties, Network Architecture, Network Components, Applications",
+                "Unit 6: Middleware for Wireless Sensor Networks - Introduction, WSN Middleware Principles, Middleware Architecture, Existing Middleware"
+            ],
+            "referenceBooks": [
+                "Wireless Communications and Networks - William Stallings",
+                "Wireless Communications - Theodore S. Rappaport",
+                "Wireless Sensor Networks - Holger Karl and Andreas Willig"
+            ]
+        },
+        {
+            "subjectName": "Internet Engineering and Network Security",
+            "topics": [
+                "Unit 1: Introduction to Internet and Application layer protocols - What is the Internet, Evolution of the Internet, Review of TCP IP layer functions, Application Layer protocols: HTTP, DHCP,DNS, FTP,TFTP,SMTP,MIME, IMAP,POP3,TELNET,SSH",
+                "Unit 2: Network Layer - IPv6 Packet format, Transition from IPv4 to IPv6,ICMPv4 and v6, Review of IP addresses, Special addresses, NAT,CIDR, Address aggregation",
+                "Unit 3: Multimedia Communication - Digitization of audio and video, Audio Compression, video compression, streaming stored audio/video, Characteristics of real time interactive audio/video, RTP,RTP Packet format, UDP Port, RTC,P,TCP messages, VOIP,SIP,H.323, Flow characteristics, Flow classes, techniques to improve QoS, resource reservation, admission control",
+                "Unit 4: Security in Networks - Introduction to Information Security, Network Security Domains, Attacks and Their classification, Security services and mechanisms, Network security basics, Overview of IP Security (IPSec), IP Security Architecture, Modes of Operation, Security Associations (SA), Authentication Header (AH), Encapsulating Security Payload (ESP), Internet Key Exchange, Web Security Requirements, Secure Socket Layer (SSL), Transport Layer Security (TLS), Secure Electronic Transaction (SET)",
+                "Unit 5: Firewalls,IDS and system security - Designing and Configuring Firewall Systems, Firewall Components,Firewalls – Types, Comparison of Firewall Types, Firewall Configuration, Installing and Configuring FW Proxy Server ,Honey pot, Digital Immune System, Signature verification, Finger print recognition, Voice recognition, Iris Recognition system, Security Operations Centre (SOC), Network Operations Centre (NOC),Network Security Audit, Cloud Security, Wi-Fi Security, Mobile and Cellular Security"
+            ],
+            "referenceBooks": [
+                "Computer Networks - Andrew S. Tanenbaum",
+                "Network Security Essentials - William Stallings",
+                "Cryptography and Network Security - William Stallings"
+            ]
+        }
+    ]
+} 

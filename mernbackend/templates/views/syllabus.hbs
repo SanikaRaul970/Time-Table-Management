@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Term Test Syllabus - Student Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .syllabus-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .subject-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .subject-name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .topics-list {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .reference-books {
+            font-style: italic;
+            color: #666;
+        }
+        .reference-books h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .error-message {
+            background-color: #fee;
+            color: #c00;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .syllabus-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .syllabus-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .syllabus-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="syllabus-container">
+            {{#if error}}
+            <div class="error-message">
+                {{error}}
+            </div>
+            {{else}}
+            <div class="syllabus-header">
+                <h2>Term Test Syllabus</h2>
+                <p>Department: {{syllabus.department}} | Year: {{syllabus.year}} | {{syllabus.termTest}}</p>
+            </div>
+            
+            {{#each syllabus.subjects}}
+            <div class="subject-card">
+                <div class="subject-name">{{this.subjectName}}</div>
+                
+                <h4>Topics:</h4>
+                <ul class="topics-list">
+                    {{#each this.topics}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+                
+                {{#if this.referenceBooks}}
+                <div class="reference-books">
+                    <h4>Reference Books:</h4>
+                    <ul class="topics-list">
+                        {{#each this.referenceBooks}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
+            </div>
+            {{/each}}
+            {{/if}}
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,43 @@
+{{> header}}
+
+<div class="container mt-4">
+    <h2>Enter Marks</h2>
+    <form action="/enter-marks" method="POST">
+        <div class="form-group">
+            <label for="studentId">Select Student:</label>
+            <select class="form-control" id="studentId" name="studentId" required>
+                {{#each students}}
+                <option value="{{this._id}}">{{this.name}} ({{this.sapid}})</option>
+                {{/each}}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="subject">Subject:</label>
+            <select class="form-control" id="subject" name="subject" required>
+                <option value="Wireless Networks">Wireless Networks</option>
+                <option value="Lens">Lens</option>
+                <option value="OC">OC</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="termTest1">Term Test 1 (25 marks):</label>
+            <input type="number" class="form-control" id="termTest1" name="termTest1" min="0" max="25" required>
+        </div>
+
+        <div class="form-group">
+            <label for="termTest2">Term Test 2 (25 marks):</label>
+            <input type="number" class="form-control" id="termTest2" name="termTest2" min="0" max="25" required>
+        </div>
+
+        <div class="form-group">
+            <label for="endSem">End Semester (50 marks):</label>
+            <input type="number" class="form-control" id="endSem" name="endSem" min="0" max="50" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Marks</button>
+    </form>
+</div>
+
+{{> footer}} 

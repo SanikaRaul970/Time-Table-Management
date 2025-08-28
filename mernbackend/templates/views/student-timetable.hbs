@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Timetable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .timetable-container {
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin: 20px auto;
+        }
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .timetable th, .timetable td {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            font-size: 14px;
+        }
+        .timetable th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        .timetable td {
+            vertical-align: middle;
+        }
+        .time-slot {
+            font-weight: 500;
+            color: #666;
+            background-color: #f8f9fa;
+        }
+        .lecture {
+            background-color: #e3f2fd;
+        }
+        .practical {
+            background-color: #f1f8e9;
+        }
+        .project {
+            background-color: #fff3e0;
+        }
+        .elective {
+            background-color: #f3e5f5;
+        }
+        .empty-slot {
+            background-color: #ffffff;
+        }
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .navbar {
+            background: #0d6efd;
+            padding: 1rem;
+        }
+        .navbar-brand {
+            color: white;
+            font-size: 1.2rem;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            .timetable-container {
+                box-shadow: none;
+            }
+            .legend {
+                border: none;
+            }
+        }
+        .error-message {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            color: #c00;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary no-print">
+        <div class="container">
+            <span class="navbar-brand">{{user.username}} - Division {{user.division}}</span>
+            <div>
+                <button class="btn btn-light me-2" onclick="window.print()">Print Timetable</button>
+                <a href="/student-dashboard" class="btn btn-outline-light">Back to Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="timetable-container">
+            {{#if error}}
+            <div class="error-message">
+                {{error}}
+            </div>
+            {{/if}}
+            
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Class Timetable - Semester {{semester}}</h4>
+                    <small>Academic Year {{academicYear}}</small>
+                </div>
+                <div class="card-body">
+                    {{#if timetable}}
+                    <div class="table-responsive">
+                        <table class="timetable">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                    <th>Saturday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each timetable.slots}}
+                                <tr>
+                                    <td class="time-slot">
+                                        {{startTime}} - {{endTime}}
+                                    </td>
+                                    <td class="{{getCellClass monday}}">{{monday}}</td>
+                                    <td class="{{getCellClass tuesday}}">{{tuesday}}</td>
+                                    <td class="{{getCellClass wednesday}}">{{wednesday}}</td>
+                                    <td class="{{getCellClass thursday}}">{{thursday}}</td>
+                                    <td class="{{getCellClass friday}}">{{friday}}</td>
+                                    <td class="{{getCellClass saturday}}">{{saturday}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="legend">
+                        <h5 class="mb-3">Legend:</h5>
+                        <div class="legend-item lecture">
+                            <span class="legend-color"></span>
+                            Theory Lectures
+                        </div>
+                        <div class="legend-item practical">
+                            <span class="legend-color"></span>
+                            Practical Sessions
+                        </div>
+                        <div class="legend-item elective">
+                            <span class="legend-color"></span>
+                            Elective Subjects
+                        </div>
+                        <div class="legend-item project">
+                            <span class="legend-color"></span>
+                            Project Work
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="alert alert-info">
+                        No timetable data available. Please contact your administrator.
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

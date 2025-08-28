@@ -1,0 +1,832 @@
+{{!< main}}
+
+<div class="admin-dashboard">
+    <div class="sidebar">
+        <div class="user-info">
+            <h3>{{user.name}}</h3>
+            <p>{{user.role}} - {{user.department}}</p>
+        </div>
+        <nav>
+            <ul>
+                <li class="active" data-tab="users"><i class="fas fa-users"></i> User Management</li>
+                <li data-tab="attendance"><i class="fas fa-clipboard-check"></i> Attendance</li>
+                <li data-tab="reports"><i class="fas fa-chart-bar"></i> Reports</li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <div class="actions">
+                <button class="btn-primary" id="addUserBtn">
+                    <i class="fas fa-plus"></i> Add New User
+                </button>
+            </div>
+        </div>
+
+        <!-- Users Management Tab -->
+        <div class="tab-content active" id="users">
+            <div class="filters">
+                <select id="roleFilter">
+                    <option value="">All Roles</option>
+                    <option value="Student">Students</option>
+                    <option value="Teacher">Teachers</option>
+                    <option value="Admin">Admins</option>
+                </select>
+                <select id="departmentFilter">
+                    <option value="">All Departments</option>
+                    <option value="COMP">Computer Engineering</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="EXTC">Electronics & Telecommunication</option>
+                    <option value="MECH">Mechanical Engineering</option>
+                </select>
+                <select id="yearFilter">
+                    <option value="">All Years</option>
+                    <option value="FE">First Year</option>
+                    <option value="SE">Second Year</option>
+                    <option value="TE">Third Year</option>
+                    <option value="BE">Final Year</option>
+                </select>
+                <select id="divisionFilter">
+                    <option value="">All Divisions</option>
+                    <optgroup label="First Year">
+                        <option value="FE-1">FE-1</option>
+                        <option value="FE-2">FE-2</option>
+                        <option value="FE-3">FE-3</option>
+                    </optgroup>
+                    <optgroup label="Second Year">
+                        <option value="SE-1">SE-1</option>
+                        <option value="SE-2">SE-2</option>
+                        <option value="SE-3">SE-3</option>
+                    </optgroup>
+                    <optgroup label="Third Year">
+                        <option value="TE-1">TE-1</option>
+                        <option value="TE-2">TE-2</option>
+                        <option value="TE-3">TE-3</option>
+                    </optgroup>
+                    <optgroup label="Final Year">
+                        <option value="BE-1">BE-1</option>
+                        <option value="BE-2">BE-2</option>
+                        <option value="BE-3">BE-3</option>
+                    </optgroup>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search users...">
+                <button class="btn-primary" id="filterUsers">Filter Users</button>
+            </div>
+
+            <div class="users-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Department</th>
+                            <th>Year</th>
+                            <th>Division</th>
+                            <th>SAP ID</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be populated dynamically after filtering -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Attendance Tab -->
+        <div class="tab-content" id="attendance">
+            <div class="attendance-filters">
+                <select id="attendanceYear">
+                    <option value="">Select Year</option>
+                    <option value="FE">First Year</option>
+                    <option value="SE">Second Year</option>
+                    <option value="TE">Third Year</option>
+                    <option value="BE">Final Year</option>
+                </select>
+                <select id="attendanceDepartment">
+                    <option value="">All Departments</option>
+                    <option value="COMP">Computer Engineering</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="EXTC">Electronics & Telecommunication</option>
+                    <option value="MECH">Mechanical Engineering</option>
+                </select>
+                <select id="attendanceDivision">
+                    <option value="">All Divisions</option>
+                    <optgroup label="First Year">
+                        <option value="FE-1">FE-1</option>
+                        <option value="FE-2">FE-2</option>
+                        <option value="FE-3">FE-3</option>
+                    </optgroup>
+                    <optgroup label="Second Year">
+                        <option value="SE-1">SE-1</option>
+                        <option value="SE-2">SE-2</option>
+                        <option value="SE-3">SE-3</option>
+                    </optgroup>
+                    <optgroup label="Third Year">
+                        <option value="TE-1">TE-1</option>
+                        <option value="TE-2">TE-2</option>
+                        <option value="TE-3">TE-3</option>
+                    </optgroup>
+                    <optgroup label="Final Year">
+                        <option value="BE-1">BE-1</option>
+                        <option value="BE-2">BE-2</option>
+                        <option value="BE-3">BE-3</option>
+                    </optgroup>
+                </select>
+                <select id="attendanceMonth">
+                    <option value="">Select Month</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                </select>
+                <input type="date" id="attendanceDate">
+                <button class="btn-primary" id="viewAttendance">View Attendance</button>
+            </div>
+
+            <div class="attendance-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>SAP ID</th>
+                            <th>Department</th>
+                            <th>Year</th>
+                            <th>Division</th>
+                            <th>Subject</th>
+                            <th>Month</th>
+                            <th>Total Classes</th>
+                            <th>Present</th>
+                            <th>Absent</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceRecordsTableBody">
+                        <!-- Attendance records will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div class="tab-content" id="reports">
+            <div class="reports-filters">
+                <select id="reportType">
+                    <option value="attendance">Attendance Report</option>
+                    <option value="users">User Statistics</option>
+                </select>
+                <select id="reportYear">
+                    <option value="">All Years</option>
+                    <option value="FE">First Year</option>
+                    <option value="SE">Second Year</option>
+                    <option value="TE">Third Year</option>
+                    <option value="BE">Final Year</option>
+                </select>
+                <select id="reportDepartment">
+                    <option value="">All Departments</option>
+                    <option value="COMP">Computer Engineering</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="EXTC">Electronics & Telecommunication</option>
+                    <option value="MECH">Mechanical Engineering</option>
+                </select>
+                <select id="reportDivision">
+                    <option value="">All Divisions</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+                <input type="date" id="startDate">
+                <input type="date" id="endDate">
+                <button class="btn-primary" id="generateReport">Generate Report</button>
+            </div>
+
+            <div class="report-content">
+                <!-- Report content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal" id="addUserModal">
+    <div class="modal-content">
+        <h2>Add New User</h2>
+        <form id="addUserForm">
+            <div class="form-group">
+                <label for="newRole">Role</label>
+                <select id="newRole" name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="newName">Name</label>
+                <input type="text" id="newName" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="newDepartment">Department</label>
+                <select id="newDepartment" name="department" required>
+                    <option value="">Select Department</option>
+                    <option value="COMP">Computer Engineering</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="EXTC">Electronics & Telecommunication</option>
+                    <option value="MECH">Mechanical Engineering</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="newYear">Year</label>
+                <select id="newYear" name="year">
+                    <option value="">Select Year</option>
+                    <option value="FE">First Year</option>
+                    <option value="SE">Second Year</option>
+                    <option value="TE">Third Year</option>
+                    <option value="BE">Final Year</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="newDivision">Division</label>
+                <select id="newDivision" name="division">
+                    <option value="">Select Division</option>
+                    <optgroup label="First Year">
+                        <option value="FE-1">FE-1</option>
+                        <option value="FE-2">FE-2</option>
+                        <option value="FE-3">FE-3</option>
+                    </optgroup>
+                    <optgroup label="Second Year">
+                        <option value="SE-1">SE-1</option>
+                        <option value="SE-2">SE-2</option>
+                        <option value="SE-3">SE-3</option>
+                    </optgroup>
+                    <optgroup label="Third Year">
+                        <option value="TE-1">TE-1</option>
+                        <option value="TE-2">TE-2</option>
+                        <option value="TE-3">TE-3</option>
+                    </optgroup>
+                    <optgroup label="Final Year">
+                        <option value="BE-1">BE-1</option>
+                        <option value="BE-2">BE-2</option>
+                        <option value="BE-3">BE-3</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-group student-fields" style="display: none;">
+                <label for="newSapid">SAP ID</label>
+                <input type="text" id="newSapid" name="sapid" pattern="[0-9]{11}">
+            </div>
+            <div class="form-group teacher-fields" style="display: none;">
+                <label for="newSubject">Subject</label>
+                <select id="newSubject" name="subject">
+                    <option value="">Select Subject</option>
+                    <option value="Wireless Networks">Wireless Networks</option>
+                    <option value="Internet Engineering and Network Security">Internet Engineering and Network Security</option>
+                    <option value="Optical Communication">Optical Communication</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="cancelAddUser">Cancel</button>
+                <button type="submit" class="btn-primary">Add User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .admin-dashboard {
+        display: flex;
+        min-height: 100vh;
+        background: #f5f7fa;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+    }
+
+    .user-info {
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .user-info h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .user-info p {
+        margin: 5px 0 0;
+        color: #bdc3c7;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    nav li {
+        padding: 10px;
+        margin: 5px 0;
+        cursor: pointer;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    nav li:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+    nav li.active {
+        background: #3498db;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    select, input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    .status-badge.Active {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-badge.Inactive {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .btn-primary {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: #666;
+    }
+
+    .btn-icon:hover {
+        color: #3498db;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 500px;
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .attendance-filters, .reports-filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .attendance-filters select, 
+    .attendance-filters input,
+    .reports-filters select,
+    .reports-filters input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-width: 150px;
+    }
+
+    .attendance-list, .report-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    .status-badge.Present {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-badge.Absent {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .filters, .attendance-filters, .reports-filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .filters select, 
+    .filters input,
+    .attendance-filters select, 
+    .attendance-filters input,
+    .reports-filters select,
+    .reports-filters input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-width: 150px;
+    }
+
+    .filters button,
+    .attendance-filters button,
+    .reports-filters button {
+        padding: 8px 16px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .filters button:hover,
+    .attendance-filters button:hover,
+    .reports-filters button:hover {
+        background: #2980b9;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+
+    .empty-state i {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #ddd;
+    }
+</style>
+
+<script>
+    // Tab switching
+    document.querySelectorAll('.sidebar li').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelector('.sidebar li.active').classList.remove('active');
+            tab.classList.add('active');
+            
+            document.querySelector('.tab-content.active').classList.remove('active');
+            document.getElementById(tab.dataset.tab).classList.add('active');
+        });
+    });
+
+    // User Management
+    document.getElementById('filterUsers').addEventListener('click', async () => {
+        const role = document.getElementById('roleFilter').value;
+        const department = document.getElementById('departmentFilter').value;
+        const year = document.getElementById('yearFilter').value;
+        const division = document.getElementById('divisionFilter').value;
+        const search = document.getElementById('searchInput').value;
+
+        // Debug: Show filter values
+        console.log('Filter button clicked with:', { role, department, year, division, search });
+        alert(`Filtering users with:\nRole: ${role}\nDepartment: ${department}\nYear: ${year}\nDivision: ${division}\nSearch: ${search}`);
+
+        try {
+            const response = await fetch(`/admin/filter-users?role=${role}&department=${department}&year=${year}&division=${division}&search=${search}`);
+            const users = await response.json();
+            
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            if (users.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <p>No users found matching the selected criteria</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><a href="/admin/student/${user._id}" class="student-profile-link">${user.name}</a></td>
+                    <td>${user.role}</td>
+                    <td>${user.department}</td>
+                    <td>${user.year || '-'}</td>
+                    <td>${user.division || '-'}</td>
+                    <td>${user.sapid || '-'}</td>
+                    <td>${user.subject || '-'}</td>
+                    <td>
+                        <span class="status-badge ${user.status}">${user.status}</span>
+                    </td>
+                    <td>
+                        <button class="btn-icon edit-user" data-id="${user._id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon delete-user" data-id="${user._id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Error filtering users:', error);
+        }
+    });
+
+    // Fetch and display attendance records when filters are changed or button is clicked
+    function fetchAttendanceRecords() {
+        const year = document.getElementById('attendanceYear').value;
+        const department = document.getElementById('attendanceDepartment').value;
+        const division = document.getElementById('attendanceDivision').value;
+        const month = document.getElementById('attendanceMonth').value;
+        let url = `/admin/attendance?`;
+        if (year) url += `year=${year}&`;
+        if (department) url += `department=${department}&`;
+        if (division) url += `division=${division}&`;
+        if (month) url += `month=${month}&`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('attendanceRecordsTableBody');
+                tbody.innerHTML = '';
+                if (Array.isArray(data)) {
+                    data.forEach(record => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${record.user ? record.user.name : ''}</td>
+                                <td>${record.user ? record.user.sapid : ''}</td>
+                                <td>${record.user ? record.user.department : ''}</td>
+                                <td>${record.user ? record.user.year : ''}</td>
+                                <td>${record.user ? record.user.division : ''}</td>
+                                <td>${record.subject || ''}</td>
+                                <td>${record.month || ''}</td>
+                                <td>${record.totalClasses || 0}</td>
+                                <td>${record.presentClasses || 0}</td>
+                                <td>${(record.totalClasses || 0) - (record.presentClasses || 0)}</td>
+                                <td>${record.percentage ? record.percentage.toFixed(2) : '0.00'}%</td>
+                            </tr>
+                        `;
+                    });
+                } else if (data.data && Array.isArray(data.data)) {
+                    data.data.forEach(record => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${record.user ? record.user.name : ''}</td>
+                                <td>${record.user ? record.user.sapid : ''}</td>
+                                <td>${record.user ? record.user.department : ''}</td>
+                                <td>${record.user ? record.user.year : ''}</td>
+                                <td>${record.user ? record.user.division : ''}</td>
+                                <td>${record.subject || ''}</td>
+                                <td>${record.month || ''}</td>
+                                <td>${record.totalClasses || 0}</td>
+                                <td>${record.presentClasses || 0}</td>
+                                <td>${(record.totalClasses || 0) - (record.presentClasses || 0)}</td>
+                                <td>${record.percentage ? record.percentage.toFixed(2) : '0.00'}%</td>
+                            </tr>
+                        `;
+                    });
+                }
+            });
+    }
+    document.getElementById('viewAttendance').addEventListener('click', fetchAttendanceRecords);
+    // Optionally, fetch on filter change
+    document.getElementById('attendanceYear').addEventListener('change', fetchAttendanceRecords);
+    document.getElementById('attendanceDepartment').addEventListener('change', fetchAttendanceRecords);
+    document.getElementById('attendanceDivision').addEventListener('change', fetchAttendanceRecords);
+    document.getElementById('attendanceMonth').addEventListener('change', fetchAttendanceRecords);
+
+    // Report Generation
+    document.getElementById('generateReport').addEventListener('click', async () => {
+        const type = document.getElementById('reportType').value;
+        const year = document.getElementById('reportYear').value;
+        const department = document.getElementById('reportDepartment').value;
+        const division = document.getElementById('reportDivision').value;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+
+        try {
+            const response = await fetch(`/admin/reports?type=${type}&year=${year}&department=${department}&division=${division}&startDate=${startDate}&endDate=${endDate}`);
+            const report = await response.json();
+            
+            const reportContent = document.querySelector('.report-content');
+            
+            if (type === 'attendance') {
+                if (report.totalRecords === 0) {
+                    reportContent.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <p>No attendance records found for the selected criteria</p>
+                        </div>
+                    `;
+                    return;
+                }
+                reportContent.innerHTML = `
+                    <h3>Attendance Report</h3>
+                    <p>Total Records: ${report.totalRecords}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Year</th>
+                                <th>Division</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${report.data.map(record => `
+                                <tr>
+                                    <td>${record.user.name}</td>
+                                    <td>${record.user.department}</td>
+                                    <td>${record.user.year || '-'}</td>
+                                    <td>${record.division || record.user.division || '-'}</td>
+                                    <td>${new Date(record.date).toLocaleDateString()}</td>
+                                    <td><span class="status-badge ${record.status}">${record.status}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else if (type === 'users') {
+                if (report.stats.total === 0) {
+                    reportContent.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <p>No users found for the selected criteria</p>
+                        </div>
+                    `;
+                    return;
+                }
+                reportContent.innerHTML = `
+                    <h3>User Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Total Users</h4>
+                            <p>${report.stats.total}</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Active Users</h4>
+                            <p>${report.stats.active}</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Inactive Users</h4>
+                            <p>${report.stats.inactive}</p>
+                        </div>
+                    </div>
+                    <h4>Users by Role</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(report.stats.byRole).map(([role, count]) => `
+                                <tr>
+                                    <td>${role}</td>
+                                    <td>${count}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <h4>Users by Department</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(report.stats.byDepartment).map(([dept, count]) => `
+                                <tr>
+                                    <td>${dept}</td>
+                                    <td>${count}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+        } catch (error) {
+            console.error('Error generating report:', error);
+        }
+    });
+</script>

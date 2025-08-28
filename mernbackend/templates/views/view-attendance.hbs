@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Attendance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            border-color: #8A2BE2;
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+            outline: none;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        .attendance-table th,
+        .attendance-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .attendance-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .status-present {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .status-absent {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #8A2BE2;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View Attendance</h1>
+        
+        {{#if error}}
+        <div class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            {{error}}
+        </div>
+        {{/if}}
+
+        <div class="filters">
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" name="subject">
+                    <option value="">All Subjects</option>
+                    <option value="Wireless Networks">Wireless Networks</option>
+                    <option value="Internet Engineering and Network Security">Internet Engineering and Network Security</option>
+                    <option value="Optical Communication">Optical Communication</option>
+                    <option value="ILE">Industry Lecture Expert (ILE)</option>
+                    <option value="H/M">Honors and Minors (H/M)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" name="startDate">
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" name="endDate">
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalClasses">0</div>
+                <div class="stat-label">Total Classes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="presentClasses">0</div>
+                <div class="stat-label">Present Classes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="absentClasses">0</div>
+                <div class="stat-label">Absent Classes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="attendancePercentage">0%</div>
+                <div class="stat-label">Attendance Percentage</div>
+            </div>
+        </div>
+
+        <table class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Teacher</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceList">
+                <!-- Attendance records will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const subjectSelect = document.getElementById('subject');
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const attendanceList = document.getElementById('attendanceList');
+        const totalClassesSpan = document.getElementById('totalClasses');
+        const presentClassesSpan = document.getElementById('presentClasses');
+        const absentClassesSpan = document.getElementById('absentClasses');
+        const attendancePercentageSpan = document.getElementById('attendancePercentage');
+
+        // Set default date range to last 30 days
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 30);
+        startDateInput.valueAsDate = startDate;
+        endDateInput.valueAsDate = endDate;
+
+        async function fetchAttendance() {
+            const subject = subjectSelect.value;
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+
+            try {
+                const response = await fetch(`/api/attendance/student?subject=${subject}&startDate=${startDate}&endDate=${endDate}`);
+                const attendance = await response.json();
+
+                // Update attendance list
+                attendanceList.innerHTML = attendance.map(record => `
+                    <tr>
+                        <td>${new Date(record.date).toLocaleDateString()}</td>
+                        <td>${record.subject}</td>
+                        <td>${record.teacherId.name}</td>
+                        <td class="status-${record.status.toLowerCase()}">${record.status}</td>
+                    </tr>
+                `).join('');
+
+                // Update statistics
+                const total = attendance.length;
+                const present = attendance.filter(record => record.status === 'Present').length;
+                const absent = total - present;
+                const percentage = total > 0 ? Math.round((present / total) * 100) : 0;
+
+                totalClassesSpan.textContent = total;
+                presentClassesSpan.textContent = present;
+                absentClassesSpan.textContent = absent;
+                attendancePercentageSpan.textContent = `${percentage}%`;
+            } catch (error) {
+                console.error('Error fetching attendance:', error);
+            }
+        }
+
+        // Add event listeners for filter changes
+        [subjectSelect, startDateInput, endDateInput].forEach(element => {
+            element.addEventListener('change', fetchAttendance);
+        });
+
+        // Initial fetch
+        fetchAttendance();
+    </script>
+</body>
+</html> 

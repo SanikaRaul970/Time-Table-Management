@@ -1,0 +1,1052 @@
+{{!< main}}
+
+<div class="student-dashboard">
+    <div class="sidebar">
+        <div class="user-info">
+            <h3>{{user.name}}</h3>
+            <p>{{user.role}} - {{user.department}}</p>
+            <p>{{user.year}} - {{user.division}}</p>
+            <p>SAP ID: {{user.sapid}}</p>
+        </div>
+        <nav>
+            <ul>
+                <li class="active" data-tab="details"><i class="fas fa-user"></i> My Details</li>
+                <li data-tab="timetable"><i class="fas fa-calendar-alt"></i> Time Table</li>
+                <li data-tab="attendance"><i class="fas fa-clipboard-check"></i> Attendance</li>
+                <li data-tab="show-attendance"><i class="fas fa-list"></i> Show Attendance</li>
+                <li data-tab="marks"><i class="fas fa-chart-line"></i> Marks</li>
+                <li data-tab="dates"><i class="fas fa-calendar"></i> Important Dates</li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Student Dashboard</h1>
+            <div class="actions">
+                <button class="zoom-btn" id="zoomInBtn" title="Zoom In"><i class="fas fa-search-plus"></i></button>
+                <button class="zoom-btn" id="zoomOutBtn" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
+                <button class="btn-primary" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- My Details -->
+        <div class="tab-content active" id="details">
+            <div class="details-card">
+                <h2>Student Information</h2>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <label>Name:</label>
+                        <span>{{user.name}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>SAP ID:</label>
+                        <span>{{user.sapid}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Department:</label>
+                        <span>{{user.department}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Year:</label>
+                        <span>{{user.year}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Division:</label>
+                        <span>{{user.division}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Table -->
+        <div class="tab-content" id="timetable">
+            <div class="timetable-card">
+                <h2>Time Table</h2>
+                <div class="timetable-content">
+                    <table class="modern-timetable">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>9:00 - 10:00</td>
+                                <td>Wireless Networks</td>
+                                <td>Optical Communication</td>
+                                <td>Internet Engineering</td>
+                                <td>Wireless Networks</td>
+                                <td>Elective</td>
+                            </tr>
+                            <tr>
+                                <td>10:15 - 11:15</td>
+                                <td>Internet Engineering</td>
+                                <td>Wireless Networks</td>
+                                <td>Optical Communication</td>
+                                <td>Elective</td>
+                                <td>Wireless Networks</td>
+                            </tr>
+                            <tr>
+                                <td>11:30 - 12:30</td>
+                                <td>Elective</td>
+                                <td>Internet Engineering</td>
+                                <td>Wireless Networks</td>
+                                <td>Optical Communication</td>
+                                <td>Internet Engineering</td>
+                            </tr>
+                            <tr>
+                                <td>12:45 - 1:45</td>
+                                <td>Optical Communication</td>
+                                <td>Elective</td>
+                                <td>Elective</td>
+                                <td>Internet Engineering</td>
+                                <td>Optical Communication</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance -->
+        <div class="tab-content" id="attendance">
+            <div class="attendance-card">
+                <h2>Attendance Records</h2>
+                <div class="attendance-filters">
+                    <select id="attendanceMonth">
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <button class="btn-primary" id="viewAttendance">View Attendance</button>
+                </div>
+                <div class="attendance-content">
+                    <!-- Attendance records will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Show Attendance -->
+        <div class="tab-content" id="show-attendance">
+            <div class="attendance-card">
+                <h2>My Attendance</h2>
+                <button class="btn-primary" id="fetchStudentAttendance">Show Attendance</button>
+                <div class="attendance-content">
+                    <table id="studentAttendanceTable" style="display:none; margin-top:1rem;">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                                <th>Division</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Marks -->
+        <div class="tab-content" id="marks">
+            <div class="marks-card">
+                <h2>Academic Performance</h2>
+                <div class="marks-filters">
+                    <select id="marksSemester">
+                        <option value="">Select Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                    </select>
+                    <button class="btn-primary" id="viewMarks">View Marks</button>
+                </div>
+                <div class="marks-content">
+                    <!-- Marks will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Dates and Syllabus -->
+        <div class="tab-content" id="dates">
+            <div class="dates-card">
+                <h2>Important Dates</h2>
+                <div class="dates-filters">
+                    <select id="datesCategory">
+                        <option value="">All Categories</option>
+                        <option value="exam">Examinations</option>
+                        <option value="assignment">Assignments</option>
+                        <option value="event">Events</option>
+                        <option value="holiday">Holidays</option>
+                    </select>
+                    <button class="btn-primary" id="viewDates">View Dates</button>
+                </div>
+                <div class="dates-content">
+                    <!-- Important dates will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-flex-row">
+            <!-- Left: Important Dates -->
+            <div class="important-dates-card">
+                <h2>Important Dates</h2>
+                <ul>
+                    <li><b>6 Jan 2025:</b> Commencement of Classes (COC)</li>
+                    <li><b>28 Feb 2025:</b> Sports Day (SD)</li>
+                    <li><b>10 Mar 2025:</b> Display of Attendance List (DL)</li>
+                    <li><b>17-19 Mar 2025:</b> Term Test 1 (TT1)</li>
+                    <li><b>27-29 Mar 2025:</b> TRINITY</li>
+                    <li><b>7 Apr 2025:</b> Display of Attendance List (DL)</li>
+                    <li><b>18 Apr 2025:</b> Annual Day (AD)</li>
+                    <li><b>9-10 May 2025:</b> Term Test 2 (TT2)</li>
+                    <li><b>12-17 May 2025:</b> Improvement Week (IW)</li>
+                    <li><b>13 May 2025:</b> Final Defaulter List (FDL)</li>
+                    <li><b>14 May 2025:</b> Term Work Submission (TWS)</li>
+                    <li><b>15-17 May 2025:</b> Oral & Practical Exam Start (O&P S)</li>
+                    <li><b>19 May 2025:</b> End Sem Exam Start (ESE S)</li>
+                    <li><b>22-24 May 2025:</b> Oral & Practical Exam End (O&P E)</li>
+                    <li><b>30-31 May 2025:</b> Term Test 2 (TT2)</li>
+                    <li><b>31 May 2025:</b> End Sem Exam End (ESE E)</li>
+                    <li><b>13 Jun 2025:</b> Term End (TE)</li>
+                </ul>
+            </div>
+
+            <!-- Right: Syllabus Section -->
+            <div class="syllabus-section">
+                <h2>Syllabus</h2>
+                <div class="syllabus-buttons">
+                    <button class="syllabus-btn" onclick="showSyllabusSubjects()">Syllabus</button>
+                    <button class="syllabus-btn" onclick="showTT1()">TT1 Syllabus</button>
+                    <button class="syllabus-btn" onclick="showTT2()">TT2 Syllabus</button>
+                    <button class="syllabus-btn" onclick="showEndSem()">End Sem Time Table</button>
+                </div>
+                <div id="syllabus-subjects" class="syllabus-subjects" style="display:none;">
+                    <button class="subject-btn" onclick="showSubject('wireless')">Wireless Network</button>
+                    <button class="subject-btn" onclick="showSubject('internet')">Internet Engineering and Network Systems</button>
+                    <button class="subject-btn" onclick="showSubject('optical')">Optical Communication</button>
+                </div>
+                <div id="syllabus-content" class="syllabus-content">
+                    <p>Select a syllabus to view its content.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .student-dashboard {
+        display: flex;
+        min-height: 100vh;
+        background: #f5f7fa;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+    }
+
+    .user-info {
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .user-info h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .user-info p {
+        margin: 5px 0 0;
+        color: #bdc3c7;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    nav li {
+        padding: 10px;
+        margin: 5px 0;
+        cursor: pointer;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    nav li:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+    nav li.active {
+        background: #3498db;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .details-card, .timetable-card, .attendance-card, .marks-card, .dates-card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .detail-item label {
+        font-weight: 600;
+        color: #666;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        display: inline-block;
+    }
+
+    .status-badge.Active {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-badge.Inactive {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .timetable-filters, .attendance-filters, .marks-filters, .dates-filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    select {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-width: 200px;
+    }
+
+    .btn-primary {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-primary:hover {
+        background: #2980b9;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .important-dates-card {
+        flex: 1 1 320px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+        padding: 28px 32px;
+        border-left: 6px solid #3498db;
+        min-width: 300px;
+        max-width: 400px;
+    }
+
+    .important-dates-card h2 {
+        color: #3498db;
+        margin-bottom: 18px;
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .important-dates-card ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+    .important-dates-card li {
+        background: #f5f7fa;
+        margin-bottom: 10px;
+        padding: 12px 18px;
+        border-radius: 6px;
+        font-size: 1.05rem;
+        color: #222;
+        box-shadow: 0 1px 2px rgba(52, 152, 219, 0.03);
+        transition: background 0.2s;
+    }
+
+    .important-dates-card li b {
+        color: #2980b9;
+        font-weight: 600;
+    }
+
+    .dashboard-flex-row {
+        display: flex;
+        gap: 32px;
+        margin: 32px 0;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .syllabus-section {
+        flex: 1 1 320px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+        padding: 28px 32px;
+        min-width: 300px;
+        max-width: 600px;
+    }
+
+    .syllabus-section h2 {
+        color: #3498db;
+        margin-bottom: 18px;
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .syllabus-buttons {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .syllabus-btn, .subject-btn {
+        background: #3498db;
+        color: #fff;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.2s;
+        margin-bottom: 8px;
+    }
+    .syllabus-btn:hover, .subject-btn:hover {
+        background: #217dbb;
+    }
+
+    .syllabus-subjects {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .syllabus-content {
+        background: #f5f7fa;
+        border-radius: 6px;
+        padding: 18px;
+        min-height: 80px;
+        color: #222;
+        font-size: 1.05rem;
+        box-shadow: 0 1px 2px rgba(52, 152, 219, 0.03);
+        margin-top: 10px;
+        overflow-x: auto;
+    }
+
+    .syllabus-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .syllabus-content th, .syllabus-content td {
+        border: 1px solid #b2bec3;
+        padding: 8px 10px;
+        text-align: left;
+    }
+
+    .syllabus-content th {
+        background: #d6eaff;
+        color: #222;
+        font-weight: 700;
+    }
+    .syllabus-content tr:nth-child(even) {
+        background: #f0f6fa;
+    }
+
+    .tt2-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        background: #fff;
+    }
+    .tt2-table th, .tt2-table td {
+        border: 1px solid #b2bec3;
+        padding: 10px 14px;
+        text-align: center;
+        font-size: 1rem;
+    }
+    .tt2-table th {
+        background: #d6eaff;
+        color: #222;
+        font-weight: 700;
+    }
+    .tt2-table tr:nth-child(even) {
+        background: #f0f6fa;
+    }
+
+    .tt2-syllabus-details {
+        margin-top: 18px;
+        background: #f5f7fa;
+        border-radius: 6px;
+        padding: 14px 18px;
+        font-size: 1.08rem;
+    }
+    .tt2-syllabus-details h4 {
+        margin-top: 0;
+        color: #217dbb;
+        font-size: 1.15rem;
+        margin-bottom: 10px;
+    }
+    .tt2-syllabus-details ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+    .tt2-syllabus-details li {
+        margin-bottom: 6px;
+    }
+    .tt2-syllabus-details b {
+        color: #2980b9;
+    }
+
+    .modern-timetable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+        overflow: hidden;
+    }
+    .modern-timetable th, .modern-timetable td {
+        padding: 1rem;
+        border-bottom: 1px solid #eaeaea;
+        text-align: center;
+        font-size: 1.05rem;
+    }
+    .modern-timetable th {
+        background: #3498db;
+        color: #fff;
+        font-weight: 600;
+    }
+    .modern-timetable tr:nth-child(even) {
+        background: #f8f9fa;
+    }
+    .modern-timetable tr:last-child td {
+        border-bottom: none;
+    }
+    @media (max-width: 700px) {
+        .modern-timetable th, .modern-timetable td {
+            padding: 0.5rem;
+            font-size: 0.95rem;
+        }
+    }
+
+    .zoom-btn {
+        background: #f5f7fa;
+        color: #3498db;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-right: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+    .zoom-btn:hover {
+        background: #3498db;
+        color: #fff;
+    }
+</style>
+
+<script>
+    // Tab switching
+    document.querySelectorAll('.sidebar li').forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active from all tabs
+            document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            // Show only the selected tab content
+            document.getElementById(tab.dataset.tab).classList.add('active');
+        });
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        window.location.href = '/logout';
+    });
+
+    // Time Table View
+    document.getElementById('viewTimetable').addEventListener('click', async () => {
+        const day = document.getElementById('timetableDay').value;
+        try {
+            const response = await fetch(`/student/timetable?day=${day}`);
+            const timetable = await response.json();
+            
+            const content = document.querySelector('.timetable-content');
+            content.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Subject</th>
+                            <th>Teacher</th>
+                            <th>Room</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${timetable.map(entry => `
+                            <tr>
+                                <td>${entry.time}</td>
+                                <td>${entry.subject}</td>
+                                <td>${entry.teacher}</td>
+                                <td>${entry.room}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (error) {
+            console.error('Error fetching timetable:', error);
+        }
+    });
+
+    // Attendance View
+    document.getElementById('viewAttendance').addEventListener('click', async () => {
+        const month = document.getElementById('attendanceMonth').value;
+        try {
+            const response = await fetch(`/student/attendance?month=${month}`);
+            const attendance = await response.json();
+            
+            const content = document.querySelector('.attendance-content');
+            content.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Division</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${attendance.map(record => `
+                            <tr>
+                                <td>${new Date(record.date).toLocaleDateString()}</td>
+                                <td>${record.subject}</td>
+                                <td><span class="status-badge ${record.status}">${record.status}</span></td>
+                                <td>${record.division || record.user.division || '-'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (error) {
+            console.error('Error fetching attendance:', error);
+        }
+    });
+
+    // Marks View
+    document.getElementById('viewMarks').addEventListener('click', async () => {
+        const semester = document.getElementById('marksSemester').value;
+        try {
+            const response = await fetch(`/student/marks?semester=${semester}`);
+            const marks = await response.json();
+            
+            const content = document.querySelector('.marks-content');
+            content.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Internal</th>
+                            <th>External</th>
+                            <th>Total</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${marks.map(mark => `
+                            <tr>
+                                <td>${mark.subject}</td>
+                                <td>${mark.internal}</td>
+                                <td>${mark.external}</td>
+                                <td>${mark.total}</td>
+                                <td>${mark.grade}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (error) {
+            console.error('Error fetching marks:', error);
+        }
+    });
+
+    // Important Dates View
+    document.getElementById('viewDates').addEventListener('click', async () => {
+        const category = document.getElementById('datesCategory').value;
+        try {
+            const response = await fetch(`/student/dates?category=${category}`);
+            const dates = await response.json();
+            
+            const content = document.querySelector('.dates-content');
+            content.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Event</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${dates.map(date => `
+                            <tr>
+                                <td>${new Date(date.date).toLocaleDateString()}</td>
+                                <td>${date.event}</td>
+                                <td>${date.category}</td>
+                                <td>${date.description}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (error) {
+            console.error('Error fetching important dates:', error);
+        }
+    });
+
+    function showSyllabusSubjects() {
+        document.getElementById('syllabus-subjects').style.display = 'flex';
+        document.getElementById('syllabus-content').innerHTML = '<p>Select a subject to view its syllabus.</p>';
+    }
+
+    function showTT1() {
+        document.getElementById('syllabus-subjects').style.display = 'none';
+        document.getElementById('syllabus-content').innerHTML = '<b>TT1 Syllabus:</b><br> Add TT1 syllabus content here.';
+    }
+
+    function showTT2() {
+        document.getElementById('syllabus-subjects').style.display = 'none';
+        document.getElementById('syllabus-content').innerHTML = `
+            <b>TT2 Exam Schedule (Year: BE)</b>
+            <table class="tt2-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>30/04/2025</th>
+                        <th>02/05/2025</th>
+                        <th>03/05/2025</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>9:00 am to 10:00 am</td>
+                        <td>ILE</td>
+                        <td>Optical Communication</td>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <td>10:30 am to 11:30 am</td>
+                        <td>Wireless Network</td>
+                        <td>
+                            <b>Electives</b><br>
+                            (IENS / SATCOM / MLSP / CV)
+                        </td>
+                        <td>
+                            AIML(H) /<br>
+                            IoT(H) /<br>
+                            IoT(M)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="tt2-syllabus-details">
+                <h4>TT2 Syllabus Details</h4>
+                <ul>
+                    <li><b>Wireless Network:</b> Module 3, 4, 5</li>
+                    <li><b>IENS:</b> Module 4, 5, 6</li>
+                    <li><b>Optical Communication:</b> Module 3, 4, 5</li>
+                </ul>
+            </div>
+        `;
+    }
+
+    function showEndSem() {
+        document.getElementById('syllabus-subjects').style.display = 'none';
+        document.getElementById('syllabus-content').innerHTML = `
+            <b>End Sem Time Table (Year: BE, Electronics & Telecommunication Engineering)</b>
+            <table class="tt2-table">
+                <thead>
+                    <tr>
+                        <th>Day & Date</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monday, 19/05/2025</td>
+                        <td>Project Management</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday, 21/05/2025</td>
+                        <td>Wireless Network</td>
+                    </tr>
+                    <tr>
+                        <td>Friday, 23/05/2025</td>
+                        <td>Optical Communication</td>
+                    </tr>
+                    <tr>
+                        <td>Monday, 26/05/2025</td>
+                        <td>Internet Engineering & Network Security</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday, 28/05/2025</td>
+                        <td>Pattern Recognition & Machine Learning</td>
+                    </tr>
+                    <tr>
+                        <td>Friday, 30/05/2025</td>
+                        <td>Satellite Communication</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+    }
+
+    function showSubject(subject) {
+        document.getElementById('syllabus-subjects').style.display = 'flex';
+        let content = '';
+        if (subject === 'wireless') {
+            content = `
+            <b>Wireless Network Syllabus</b>
+            <table>
+                <tr><th>Unit</th><th>Description</th><th>Duration</th></tr>
+                <tr>
+                    <td>1</td>
+                    <td>Introduction to Internet and Application layer protocols:<br>
+                    What is the Internet, Evolution of the Internet, Review of TCP IP layer functions, Application Layer protocols: HTTP, DHCP, DNS, FTP, TFTP, SMTP, MIME, IMAP, POP3, TELNET, SSH</td>
+                    <td>08</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Network Layer:<br>
+                    IPv6, Packet format, Transition from IPv4 to IPv6, ICMP(v4 and v6), Review of IP addresses, Special addresses, NAT, CIDR: Address aggregation</td>
+                    <td>07</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Multimedia Communication:<br>
+                    Digitizing audio and video, Audio Compression, Video compression, streaming stored audio/video, Characteristics of real time interactive audio/video, RTP, RTP Packet format, UDP Port, RTCP, RTCP messages, VOIP: SIP, H.323, Flow characteristics, Flow classes, techniques to improve QoS, resource reservation, admission control</td>
+                    <td>08</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Security in Networks:<br>
+                    Introduction to Information Security, Network Security Domains, Attacks and Their classification, Security services and mechanisms, Network security basics, Overview of IP Security (IPSec), IP Security Architecture, Modes of Operation, Security Associations (SA), Authentication Header (AH), Encapsulating Security Payload (ESP), Internet Key Exchange, Web Security Requirements, Secure Socket Layer (SSL), Transport Layer Security (TLS), Secure Electronic Transaction (SET).</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Firewalls IDS and system security:<br>
+                    Designing and Configuring Firewall Systems, Firewall Components Firewalls – Types, Comparison of Firewall Types, Firewall Configurations. Installing and Configuring FW, Proxy Server, Honey pot, Digital Immune System.</td>
+                    <td>06</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>System security and case study:<br>
+                    Signature verification, Finger print recognition, Voice recognition, Iris Recognition system. Security Operations Centre (SOC), Network Operations Centre (NOC), Network Security Audit, Cloud Security, Wi-Fi Security, Mobile and Cellular Security.</td>
+                    <td>06</td>
+                </tr>
+            </table>
+            `;
+        } else if (subject === 'internet') {
+            content = `
+            <b>Internet Engineering and Network Systems Syllabus</b>
+            <table>
+                <tr><th>Unit</th><th>Description</th><th>Duration</th></tr>
+                <tr>
+                    <td>1</td>
+                    <td>Introduction to Internet and Application layer protocols:<br>
+                    What is the Internet, Evolution of the Internet, Review of TCP IP layer functions, Application Layer protocols: HTTP, DHCP, DNS, FTP, TFTP, SMTP, MIME, IMAP, POP3, TELNET, SSH</td>
+                    <td>08</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Network Layer:<br>
+                    IPv6, Packet format, Transition from IPv4 to IPv6, ICMP(v4 and v6), Review of IP addresses, Special addresses, NAT, CIDR: Address aggregation</td>
+                    <td>07</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Multimedia Communication:<br>
+                    Digitizing audio and video, Audio Compression, Video compression, streaming stored audio/video, Characteristics of real time interactive audio/video, RTP, RTP Packet format, UDP Port, RTCP, RTCP messages, VOIP: SIP, H.323, Flow characteristics, Flow classes, techniques to improve QoS, resource reservation, admission control</td>
+                    <td>08</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Security in Networks:<br>
+                    Introduction to Information Security, Network Security Domains, Attacks and Their classification, Security services and mechanisms, Network security basics, Overview of IP Security (IPSec), IP Security Architecture, Modes of Operation, Security Associations (SA), Authentication Header (AH), Encapsulating Security Payload (ESP), Internet Key Exchange, Web Security Requirements, Secure Socket Layer (SSL), Transport Layer Security (TLS), Secure Electronic Transaction (SET).</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Firewalls IDS and system security:<br>
+                    Designing and Configuring Firewall Systems, Firewall Components Firewalls – Types, Comparison of Firewall Types, Firewall Configurations. Installing and Configuring FW, Proxy Server, Honey pot, Digital Immune System.</td>
+                    <td>06</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>System security and case study:<br>
+                    Signature verification, Finger print recognition, Voice recognition, Iris Recognition system. Security Operations Centre (SOC), Network Operations Centre (NOC), Network Security Audit, Cloud Security, Wi-Fi Security, Mobile and Cellular Security.</td>
+                    <td>06</td>
+                </tr>
+            </table>
+            `;
+        } else if (subject === 'optical') {
+            content = `
+            <b>Optical Communication Syllabus</b>
+            <table>
+                <tr><th>Unit</th><th>Description</th><th>Duration</th></tr>
+                <tr>
+                    <td>1</td>
+                    <td><b>Optical Fiber Fundamentals:</b><br>
+                    Motivations for light wave communications, General Optical system block diagram, advantages, disadvantages and applications of optical fiber communication, Loss and bandwidth window of optical fiber waveguides, Ray theory, Electromagnetic waves, Modes in a planar waveguide, Phase and group velocity, Types and classification of optical fibers</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><b>Transmission Characteristics of Optical Fiber:</b><br>
+                    Attenuation, absorption, linear and nonlinear scattering losses, bending losses, dispersion, Chromatic dispersion, Intermodal dispersion, Over all dispersion in single mode and multimode fibers, dispersion shifted and dispersion flattened fibers, OTDR. Non-linear effects, scattering effects, Kerr effects, soliton</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><b>Optical Sources and Detectors:</b><br>
+                    Working principle and characteristics of sources (LED, LASER), Tunable lasers, Quantum well lasers, Charge capture in Quantum well lasers, Multi Quantum well Laser diodes, Surface Emitting Lasers: Vertical cavity Surface Emitting Lasers. Working principle and characteristics of detectors (PIN, APD), Material requirement for RECPD, Resonant cavity enhancement (RCE) Photo Detector, receiver structure, bit error rate of optical receivers and receiver performance</td>
+                    <td>08</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><b>Optical Communication Components:</b><br>
+                    Fiber joints, fiber connectors, splices Couplers, Isolators, multiplexers, filters, fiber gratings, Fabry Perot filters, switches and wavelength converters, Optical amplifiers, basic applications and types (EDFA and SOA).</td>
+                    <td>06</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><b>Optical Networks and Free Space Optics:</b><br>
+                    Point-to-Point links, system considerations, Link Power budget, Rise time budget, SONET/SDH optical networks, WDM and DWDM optical networks. Introduction to FSO, Applications, Comparison with microwave systems, coherent optical space communication, Drawback and problems of realization, system description and design.</td>
+                    <td>08</td>
+                </tr>
+            </table>
+            `;
+        }
+        document.getElementById('syllabus-content').innerHTML = content;
+    }
+
+    document.getElementById('fetchStudentAttendance').onclick = function() {
+        fetch('/student/attendance?month=')
+            .then(res => res.json())
+            .then(data => {
+                const table = document.getElementById('studentAttendanceTable');
+                const tbody = table.querySelector('tbody');
+                tbody.innerHTML = '';
+                if (data && data.length > 0) {
+                    data.forEach(record => {
+                        tbody.innerHTML += `<tr>
+                            <td>${new Date(record.date).toLocaleDateString()}</td>
+                            <td>${record.subject}</td>
+                            <td>${record.status}</td>
+                            <td>${record.division}</td>
+                        </tr>`;
+                    });
+                    table.style.display = '';
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4">No attendance records found.</td></tr>';
+                    table.style.display = '';
+                }
+            });
+    };
+
+    // Zoom in/out functionality
+    let zoomLevel = 1;
+    const root = document.documentElement;
+    document.getElementById('zoomInBtn').onclick = function() {
+        zoomLevel = Math.min(zoomLevel + 0.1, 2);
+        root.style.fontSize = (zoomLevel * 16) + 'px';
+    };
+    document.getElementById('zoomOutBtn').onclick = function() {
+        zoomLevel = Math.max(zoomLevel - 0.1, 0.6);
+        root.style.fontSize = (zoomLevel * 16) + 'px';
+    };
+</script>

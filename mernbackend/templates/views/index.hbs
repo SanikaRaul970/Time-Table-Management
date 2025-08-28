@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: #6c3bff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #6c3bff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(108, 59, 255, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 4px;
+            margin-bottom: 20px;
+            background: #fff3f3;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ffcdd2;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #6c3bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #5b32d6;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .switch a {
+            color: #6c3bff;
+            text-decoration: none;
+        }
+
+        .switch a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <h2>Login</h2>
+
+        {{#if error}}
+        <div class="error-message">{{error}}</div>
+        {{/if}}
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select name="role" id="role" required>
+                    <option value="">Select Role</option>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="form-group student-field" style="display: none;">
+                <label for="sapid">SAP ID</label>
+                <input type="text" name="sapid" id="sapid" placeholder="Enter your SAP ID">
+            </div>
+
+            <div class="form-group non-student-field">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" placeholder="Enter your name">
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <script>
+        document.getElementById('role').addEventListener('change', function() {
+            const studentFields = document.querySelector('.student-field');
+            const nonStudentFields = document.querySelector('.non-student-field');
+            
+            if (this.value === 'Student') {
+                studentFields.style.display = 'block';
+                nonStudentFields.style.display = 'none';
+                document.getElementById('sapid').required = true;
+                document.getElementById('name').required = false;
+            } else {
+                studentFields.style.display = 'none';
+                nonStudentFields.style.display = 'block';
+                document.getElementById('sapid').required = false;
+                document.getElementById('name').required = true;
+            }
+        });
+        </script>
+
+        <p class="switch">Don't have an account? <a href="/register">Register</a></p>
+    </div>
+
+    <script>
+        function validateForm() {
+            const sapid = document.getElementById('sapid').value;
+            const password = document.getElementById('password').value;
+
+            // Clear any existing error messages
+            const existingError = document.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+
+            // Validate SAP ID format (11 digits)
+            if (!/^\d{11}$/.test(sapid)) {
+                const error = document.createElement('div');
+                error.className = 'error-message';
+                error.textContent = 'SAP ID must be exactly 11 digits';
+                document.querySelector('form').insertBefore(error, document.querySelector('button'));
+                return false;
+            }
+
+            // Validate password is not empty
+            if (!password) {
+                const error = document.createElement('div');
+                error.className = 'error-message';
+                error.textContent = 'Password is required';
+                document.querySelector('form').insertBefore(error, document.querySelector('button'));
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>

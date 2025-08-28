@@ -1,0 +1,257 @@
+{{!< main}}
+
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<div class="container">
+    <h1>Registration</h1>
+    
+    {{#if error}}
+    <div class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        {{error}}
+    </div>
+    {{/if}}
+
+    <form action="/register" method="POST">
+        <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" name="role" required onchange="updateFormFields()">
+                <option value="">Select Role</option>
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+
+        <div class="conditional-fields" id="commonFields">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="department">Department</label>
+                <select id="department" name="department" required>
+                    <option value="">Select Department</option>
+                    <option value="COMP">Computer Engineering</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="EXTC">Electronics & Telecommunication</option>
+                    <option value="MECH">Mechanical Engineering</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="conditional-fields" id="studentFields" style="display: none;">
+            <div class="form-group">
+                <label for="student-sapid">SAP ID</label>
+                <input type="text" id="student-sapid" name="sapid" pattern="[0-9]{11}" title="SAP ID must be 11 digits">
+            </div>
+            <div class="form-group">
+                <label for="student-year">Year</label>
+                <select id="student-year" name="year">
+                    <option value="">Select Year</option>
+                    <option value="FE">First Year</option>
+                    <option value="SE">Second Year</option>
+                    <option value="TE">Third Year</option>
+                    <option value="BE">Fourth Year</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="student-division">Division</label>
+                <select id="student-division" name="division">
+                    <option value="">Select Division</option>
+                    <option value="BE-1">BE-1</option>
+                    <option value="BE-2">BE-2</option>
+                    <option value="BE-3">BE-3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="conditional-fields" id="teacherFields" style="display: none;">
+            <div class="form-group">
+                <label for="teacher-year">Year</label>
+                <select id="teacher-year" name="year">
+                    <option value="">Select Year</option>
+                    <option value="FE">First Year</option>
+                    <option value="SE">Second Year</option>
+                    <option value="TE">Third Year</option>
+                    <option value="BE">Fourth Year</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="teacher-division">Division</label>
+                <select id="teacher-division" name="division">
+                    <option value="">Select Division</option>
+                    <option value="BE-1">BE-1</option>
+                    <option value="BE-2">BE-2</option>
+                    <option value="BE-3">BE-3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" name="subject">
+                    <option value="">Select Subject</option>
+                    <option value="Wireless Networks">Wireless Networks</option>
+                    <option value="Internet Engineering and Network Security">Internet Engineering and Network Security</option>
+                    <option value="Optical Communication">Optical Communication</option>
+                    <option value="ILE">Industry Lecture Expert (ILE)</option>
+                    <option value="H/M">Honors and Minors (H/M)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" id="usernameField" style="display: none;">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Username">
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+    <p class="login-link">Already have an account? <a href="/login">Login here</a></p>
+</div>
+
+<style>
+    body {
+        background: #f0f2f5;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #555;
+        font-weight: 500;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    select:focus, input:focus {
+        border-color: #8A2BE2;
+        box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+        outline: none;
+    }
+
+    .conditional-fields {
+        margin-top: 1rem;
+    }
+
+    button {
+        width: 100%;
+        padding: 1rem;
+        background: #8A2BE2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        background: #7B27CC;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(138, 43, 226, 0.2);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #666;
+    }
+
+    .login-link a {
+        color: #8A2BE2;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+</style>
+
+<script>
+    function updateFormFields() {
+        const role = document.getElementById('role').value;
+        const studentFields = document.getElementById('studentFields');
+        const teacherFields = document.getElementById('teacherFields');
+        const usernameField = document.getElementById('usernameField');
+
+        // Hide all conditional fields
+        studentFields.style.display = 'none';
+        teacherFields.style.display = 'none';
+        usernameField.style.display = 'none';
+
+        // Remove name attributes from all conditional fields
+        document.getElementById('student-year').removeAttribute('name');
+        document.getElementById('student-division').removeAttribute('name');
+        document.getElementById('teacher-year').removeAttribute('name');
+        document.getElementById('teacher-division').removeAttribute('name');
+        document.getElementById('subject').removeAttribute('name');
+        document.getElementById('username').removeAttribute('name');
+
+        if (role === 'Student') {
+            studentFields.style.display = 'block';
+            document.getElementById('student-year').setAttribute('name', 'year');
+            document.getElementById('student-division').setAttribute('name', 'division');
+        } else if (role === 'Teacher') {
+            teacherFields.style.display = 'block';
+            usernameField.style.display = 'block';
+            document.getElementById('teacher-year').setAttribute('name', 'year');
+            document.getElementById('teacher-division').setAttribute('name', 'division');
+            document.getElementById('subject').setAttribute('name', 'subject');
+            document.getElementById('username').setAttribute('name', 'username');
+        } else if (role === 'Admin') {
+            usernameField.style.display = 'block';
+            document.getElementById('username').setAttribute('name', 'username');
+        }
+    }
+
+    // Trigger the change event on page load
+    document.getElementById('role').dispatchEvent(new Event('change'));
+</script>
